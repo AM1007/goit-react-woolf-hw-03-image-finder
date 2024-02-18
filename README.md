@@ -14,7 +14,7 @@
 Write an image search application by keyword. See the preview of the working
 application at the link.
 
-[Preview](./assets/image-finder.mp4)
+[Preview](https://drive.google.com/file/d/1oXCGyiq4uKwW0zzraZLKk4lh3voBlBzZ/view)
 
 Create `<Searchbar>`, `<ImageGallery>`, `<ImageGalleryItem>`, `<Loader>`,
 `<Button>` and `<Modal>` components. You can utilize the pre-existing component
@@ -29,7 +29,9 @@ Sign up to receive a private access key. Then, for your HTTP requests, utilize
 
 The URL string of the HTTP request.
 
-`https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12`
+```html
+https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12
+```
 
 The Pixabay API supports pagination, with the default `page` parameter set to
 `1`. Each response will contain 12 objects, specified by the `per_page`
