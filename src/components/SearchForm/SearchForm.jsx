@@ -4,7 +4,7 @@ import s from './SearchForm.module.css';
 import { IconContext } from 'react-icons';
 import { FiSearch } from 'react-icons/fi';
 
-class SearchForm extends Component {
+export class SearchForm extends Component {
   state = {
     searchText: '',
   };
@@ -45,4 +45,3 @@ class SearchForm extends Component {
     );
   }
 }
-export default SearchForm;

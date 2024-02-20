@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './Button.module.css';
 
-const Button = ({ onClick }) => {
+export const Button = ({ onClick }) => {
   return (
     <div className={s.wrapper}>
       <button type="button" className={s.button} onClick={onClick}>
@@ -10,5 +10,3 @@ const Button = ({ onClick }) => {
     </div>
   );
 };
-
-export default Button;

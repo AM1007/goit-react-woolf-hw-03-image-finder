@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import * as api from '../services/api';
-import SearchForm from './SearchForm/SearchForm';
-import ImageGallery from './ImageGallery/ImageGallery';
-import Button from './Button/Button';
-import Loader from './Loader/Loader';
+import * as api from '../../services/api';
+import { SearchForm, ImageGallery, Button, Loader } from 'components';
 
-class App extends Component {
+export class App extends Component {
   state = {
     searchText: '',
     page: 1,
@@ -65,5 +62,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

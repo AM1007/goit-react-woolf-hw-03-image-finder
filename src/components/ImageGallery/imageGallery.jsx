@@ -1,8 +1,8 @@
 import React from 'react';
-import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import { ImageGalleryItem } from 'components';
 import s from './ImageGallery.module.css';
 
-const ImageGallery = ({ images, openModal }) => {
+export const ImageGallery = ({ images, openModal }) => {
   return (
     <ul className={s.imageGallery}>
       {images.map(image => (
@@ -15,5 +15,3 @@ const ImageGallery = ({ images, openModal }) => {
     </ul>
   );
 };
-
-export default ImageGallery;
