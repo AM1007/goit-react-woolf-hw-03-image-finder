@@ -1,25 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 import s from './ImageGalleryItem.module.css';
-import PropTypes from 'prop-types';
+import Modal from 'components/Modal/Modal';
 
-const ImageGalleryItem = props => {
-  const { hit, onClick } = props;
-  return (
-    <li className={s.imageGalleryItem} id={hit.id} onClick={onClick}>
-      <img
-        src={hit.webformatURL}
-        alt={hit.tags}
-        data-src={hit.largeImageURL}
-        loading="lazy"
-        className={s.imageGalleryItem__image}
-      />
-    </li>
-  );
-};
+class ImageGalleryItem extends Component {
+  state = {
+    isShowModal: false,
+  };
 
-ImageGalleryItem.propTypes = {
-  hit: PropTypes.shape().isRequired,
-  onClick: PropTypes.func.isRequired,
-};
+  toggleModal = () => {
+    this.setState(({ isShowModal }) => ({
+      isShowModal: !isShowModal,
+    }));
+  };
+
+  render() {
+    const { isShowModal } = this.state;
+    const { image } = this.props;
+
+    return (
+      <>
+        <li className={s.imageGalleryItem}>
+          <img
+            src={image.webformatURL}
+            alt={image.tags}
+            className={s.imageGalleryItem__image}
+            loading="lazy"
+            onClick={this.toggleModal}
+          />
+          {isShowModal && (
+            <Modal
+              largeImageURL={image.largeImageURL}
+              tags={image.tags}
+              onClose={this.toggleModal}
+            />
+          )}
+        </li>
+      </>
+    );
+  }
+}
 
 export default ImageGalleryItem;

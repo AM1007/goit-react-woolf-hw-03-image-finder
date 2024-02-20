@@ -1,66 +1,66 @@
 import React, { Component } from 'react';
-import Modal from 'components/Modal/Modal';
-import Searchbar from 'components/Searchbar/Searchbar';
-import ImageInfo from 'components/ImageInfo/ImageInfo';
-import Button from 'components/Button/Button';
+import * as api from '../services/api';
+import SearchForm from './SearchForm/SearchForm';
+import ImageGallery from './ImageGallery/ImageGallery';
+import Button from './Button/Button';
+import Loader from './Loader/Loader';
 
 class App extends Component {
   state = {
-    showModal: false,
-    searchQuery: '',
+    searchText: '',
     page: 1,
-    src: '',
-    alt: '',
-    moreVisible: false,
+    images: [],
+    showBtn: false,
+    isLoading: false,
   };
 
-  toggleModal = e => {
-    this.setState(({ showModal }) => ({ showModal: !showModal }));
-
-    if (!this.state.showModal) {
-      this.setState({ src: e.target.dataset.src, alt: e.target.alt });
+  componentDidUpdate(_, prevState) {
+    const { searchText, page } = this.state;
+    if (searchText !== prevState.searchText || page !== prevState.page) {
+      this.setState({ isLoading: true });
+      api
+        .getImages(searchText, page)
+        .then(({ hits, totalHits }) => {
+          this.setState(prevState => ({
+            images: [...prevState.images, ...hits],
+            showBtn: page < Math.ceil(totalHits / 12),
+          }));
+        })
+        .catch()
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
     }
+  }
+
+  handleSubmit = searchText => {
+    this.setState({ searchText, page: 1, images: [] });
   };
 
-  submitForm = e => {
-    this.setState({ page: 1 });
-    this.setState({ searchQuery: e.value });
-  };
-
-  moreButtonRender = () => {
-    this.setState({ moreVisible: true });
-  };
-
-  moreButtonHide = () => {
-    this.setState({ moreVisible: false });
-  };
-
-  clickMoreButton = e => {
-    this.setState(prevState => {
-      return { page: prevState.page + 1 };
-    });
+  handleLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
   render() {
-    const { showModal, moreVisible, searchQuery, page, src, alt } = this.state;
-
+    const { images, showBtn, isLoading } = this.state;
     return (
       <>
-        <Searchbar onSubmit={this.submitForm} />
-        <ImageInfo
-          searchQuery={searchQuery}
-          page={page}
-          onClick={this.toggleModal}
-          moreButtonRender={this.moreButtonRender}
-          moreButtonHide={this.moreButtonHide}
-        />
-        {moreVisible && <Button onClick={this.clickMoreButton} />}
-
-        {showModal && (
-          <Modal onClose={this.toggleModal}>
-            <img src={src} alt={alt} />
-          </Modal>
+        <SearchForm handleSubmit={this.handleSubmit} />
+        {images.length > 0 ? (
+          <ImageGallery images={images} />
+        ) : (
+          <p
+            style={{
+              padding: 100,
+              textAlign: 'center',
+              fontSize: 20,
+            }}
+          >
+            Image gallery is empty..
+          </p>
         )}
+        {showBtn && <Button onClick={this.handleLoadMore} />}
+        {isLoading && <Loader />}
       </>
     );
   }
